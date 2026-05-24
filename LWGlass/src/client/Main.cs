@@ -15,11 +15,7 @@ using UnityEngine;
 
 namespace LWGlass.Client
 {
-    public class Glass : 
-        ComponentClientCode<CircuitBoard.IData>,
-        IColorableClientCode,
-        IResizableX,
-        IResizableZ
+    public class Glass : CircuitBoard
     {
         [Setting_SliderFloat("LWGlass.Glass.GlassTransparency")]
         public static float GlassTransparency
@@ -61,7 +57,7 @@ namespace LWGlass.Client
         }
         public string ColorsFileKey => "Boards";
         public float MinColorValue => 0;
-
+        /*
         public int SizeX
         {
             get => Data.SizeX;
@@ -78,6 +74,7 @@ namespace LWGlass.Client
         }
         public int MinZ => 1;
         public int MaxZ => 80;
+        */
         public float GridIntervalZ => 1f;
         
         protected Material setSharedMaterial()
@@ -102,56 +99,7 @@ namespace LWGlass.Client
             previousSizeZ = SizeZ;
             obj.transform.localScale = new Vector3(SizeX, .5f, SizeZ) * 0.3f;
         }
-        protected override ChildPlacementInfo GenerateChildPlacementInfo()
-        {
-            ChildPlacementInfo childPlacementInfo = new ChildPlacementInfo();
-            childPlacementInfo.Points = new FixedPlacingPoint[SizeZ * SizeX * 2];
-            
-            int i = 0;
-            for (int iX = 0; iX < SizeX; iX++)
-            {
-                for (int iZ = 0; iZ < SizeZ; iZ++)
-                {
-                    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-                    {
-                        Position = new Vector3(iX, .5f, iZ),
-                        UpDirection = new Vector3(0, 1, 0)
-                    };
-                    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-                    {
-                        Position = new Vector3(iX, 0, iZ),
-                        UpDirection = new Vector3(0, -1, 0)
-                    };
-                }
-            }
-            //for (int SX1 = 0; SX1 < SizeX; SX1++)
-            //{
-            //    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-            //    {
-            //        Position = new Vector3(SX1, 0, -.3f ),
-            //        UpDirection = new Vector3(0, 0, -1)
-            //    };
-            //    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-            //    {
-            //        Position = new Vector3(SX1, 0, SizeZ+.3f ),
-            //        UpDirection = new Vector3(0, 0, 1)
-            //    };
-            //}
-            //for (int SX1 = 0; SX1 < SizeZ; SX1++)
-            //{
-            //    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-            //    {
-            //        Position = new Vector3(-.3f, 0, SX1 ),
-            //        UpDirection = new Vector3(-1, 0, 0)
-            //    };
-            //    childPlacementInfo.Points[i++] = new FixedPlacingPoint()
-            //    {
-            //        Position = new Vector3(SizeX+.3f, 0, SX1 ),
-            //        UpDirection = new Vector3(1, 0, 0)
-            //    };
-            //}
-            return childPlacementInfo;
-        }
+        
         protected override IDecoration[] GenerateDecorations(Transform parentToCreateDecorationsUnder)
         {
             var myGameObject = new GameObject("glass");
@@ -167,7 +115,7 @@ namespace LWGlass.Client
                 new Decoration()
                 {
                     DecorationObject = myGameObject,
-                    LocalPosition = new Vector3(-.15f, 0, -.15f),
+                    LocalPosition = new Vector3(0,0,0),
                     AutoSetupColliders = true,
                 }
             };
